@@ -339,39 +339,15 @@ namespace ApiMentopoker.Repositories
 
 
 
-        public async Task<ConjuntoPartidasUsuario> GetPartidasAsync(int Usuario_id, string peticion, DateTime? fechaInicio = null, DateTime? fechaFinal = null, string? cell_id = null, int? condicion =null, double? cantidadJugada = null)
+        public async Task<ConjuntoPartidasUsuario> GetPartidasAsync(int Usuario_id, DateOnly? fechaInicio = null, DateOnly? fechaFinal = null, string? cell_id = null, int? condicion =null, double? cantidadJugada = null)
             {
-            //string sql = "SP_GET_PARTIDAS";
-            //var consulta = this.context.Partidas.FromSqlRaw(sql);
-            //List<Partida> partidas = consulta.ToList();
 
-            //for(int i=0;i<partidas.Count;i++)
-            //{
-            //    partidas[i].Rondas = this.GetRondas(int.Parse(partidas[i].Partida_id));
-
-            //}
-
-            //var consulta = from datos in this.context.Partidas
-            //                where datos.Usuario_id == Usuario_id.ToString()
-            //                select datos;
-
-
-
-
-
+            
             List<PartidaModel> partidas = new List<PartidaModel>();
-
-
 
 
             if (fechaInicio !=null || fechaFinal !=null)
             {
-                //  var consulta = from datos in this.context.Partidas
-                //                where datos.Usuario_id == Usuario_id.ToString() &&
-                //                      (!fecha.HasValue || datos.Fecha > fecha.Value)
-                //                select datos;
-                //partidas = consulta.ToList();
-
 
                 var consulta = from datos in this.context.Partidas
                                where datos.Usuario_id == Usuario_id.ToString() &&
@@ -417,23 +393,6 @@ namespace ApiMentopoker.Repositories
             conjunto.Rondas = rondas;
             conjunto.Jugadas = jugadas;
 
-            //if (peticion == "partidas")
-            //{
-            //    conjunto.EstadisticasPartidas = this.GetEstadisticasPartidas(conjunto);
-            //}
-            //if (peticion == "jugadasFecha") 
-            //{
-            //    conjunto.EstadisticasJugadas = this.GetEstadisticasJugadas(conjunto);
-
-            //}if(peticion == "jugadasCellid")
-            //{
-            //    conjunto.EstadisticasJugadas = this.GetEstadisticasJugadas(conjunto, cell_id);
-            //}
-          
-
-
-
-
             return conjunto;
 
 
@@ -455,13 +414,13 @@ namespace ApiMentopoker.Repositories
             return jugada;
         }
 
-        public async Task<EstadisticasPartidas> GetEstadisticasPartidasAsync(int Usuario_id, string peticion, DateTime? fechaInicio = null, DateTime? fechaFinal = null)
+        public async Task<EstadisticasPartidas> GetEstadisticasPartidasAsync(int Usuario_id, DateOnly? fechaInicio = null, DateOnly? fechaFinal = null)
         {
             EstadisticasPartidas stats = new EstadisticasPartidas();
 
    
 
-            stats.partidas =  await this.GetPartidasAsync(Usuario_id, peticion, fechaInicio, fechaFinal);
+            stats.partidas =  await this.GetPartidasAsync(Usuario_id, fechaInicio, fechaFinal);
 
             double rentabilidades = 0;
 
@@ -489,7 +448,7 @@ namespace ApiMentopoker.Repositories
 
 
 
-        public async Task<EstadisticasJugadas> GetEstadisticasJugadasAsync(int Usuario_id, string peticion, DateTime? fechaInicio = null, DateTime? fechaFinal = null, string? cell_id = null, int? condicion = null, double? cantidadJugada = null)
+        public async Task<EstadisticasJugadas> GetEstadisticasJugadasAsync(int Usuario_id, DateOnly? fechaInicio = null, DateOnly? fechaFinal = null, string? cell_id = null, int? condicion = null, double? cantidadJugada = null)
             {
             
             
@@ -498,7 +457,7 @@ namespace ApiMentopoker.Repositories
 
        
 
-            stats.partidas = await this.GetPartidasAsync(Usuario_id, peticion, fechaInicio, fechaFinal, cell_id, condicion, cantidadJugada);
+            stats.partidas = await this.GetPartidasAsync(Usuario_id, fechaInicio, fechaFinal, cell_id, condicion, cantidadJugada);
       
 
 

@@ -20,7 +20,8 @@ namespace ApiMentopoker.Controllers
             this.repoTablas = repoTablas;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("[action]/{id}")]
         public async Task<ActionResult<List<Celda>>> GetTabla(int id)
         {
             return await this.repoTablas.GetTablaAsync(id);
@@ -36,6 +37,7 @@ namespace ApiMentopoker.Controllers
         //}
 
         [HttpPost]
+        [Route("[action]")]
         public async Task<ActionResult> InsertarPartida([FromBody] PartidaRequest partidaRequest)
         {
             int[] ids_Jugadas = partidaRequest.IdsJugadas;

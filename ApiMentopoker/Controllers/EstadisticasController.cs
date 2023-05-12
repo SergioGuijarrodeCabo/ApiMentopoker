@@ -37,9 +37,9 @@ namespace ApiMentopoker.Controllers
         public async Task<ActionResult<ConjuntoPartidasUsuario>> GetPartidas([FromBody] PartidasRequest request)
         {
             int usuarioId = request.UsuarioId;
-     
-            DateTime? fechaInicio = request.FechaInicio;
-            DateTime? fechaFinal = request.FechaFinal;
+
+            DateOnly? fechaInicio = request.FechaInicio;
+            DateOnly? fechaFinal = request.FechaFinal;
 
 
             ConjuntoPartidasUsuario result = await this.repoStats.GetPartidasAsync(
@@ -54,9 +54,9 @@ namespace ApiMentopoker.Controllers
         public async Task<ActionResult<EstadisticasPartidas>> GetEstadisticasPartidas([FromBody] PartidasRequest request)
         {
             int usuarioId = request.UsuarioId;
-         
-            DateTime? fechaInicio = request.FechaInicio;
-            DateTime? fechaFinal = request.FechaFinal;
+
+            DateOnly? fechaInicio = request.FechaInicio;
+            DateOnly? fechaFinal = request.FechaFinal;
            
 
             EstadisticasPartidas result = await this.repoStats.GetEstadisticasPartidasAsync(

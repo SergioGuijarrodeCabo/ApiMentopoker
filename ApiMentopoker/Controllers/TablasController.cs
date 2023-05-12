@@ -4,19 +4,19 @@ using NugetMentopoker.Models;
 
 namespace ApiMentopoker.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
-    public class MentopokerController : ControllerBase
+    public class TablasController : ControllerBase
     {
-        private RepositoryEstadisticas repoStats;
-        private RepositoryLogin repoLogin;
+
+
         private RepositoryTablas repoTablas;
 
 
-        public MentopokerController(RepositoryEstadisticas repoStats, RepositoryLogin repoLogin, RepositoryTablas repoTablas)
+        public TablasController(RepositoryTablas repoTablas)
         {
-            this.repoStats = repoStats;
-            this.repoLogin = repoLogin;
+         
             this.repoTablas = repoTablas;
         }
 
@@ -57,8 +57,6 @@ namespace ApiMentopoker.Controllers
 
             return Ok();
         }
-
-
 
     }
 }

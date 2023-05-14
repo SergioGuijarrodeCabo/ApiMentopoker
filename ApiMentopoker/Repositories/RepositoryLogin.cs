@@ -19,7 +19,7 @@ namespace ApiMentopoker.Repositories
         }
 
 
-        private string GetMaxIdUsuario()
+        private async Task<string> GetMaxIdUsuarioAsync()
         {
             if (this.context.Usuarios.Count() == 0)
             {
@@ -33,10 +33,10 @@ namespace ApiMentopoker.Repositories
         }
 
 
-        public async Task RegisterUsuario(string Email, string Pass, string Nombre, string Rol)
+        public async Task RegisterUsuarioAsync(string Email, string Pass, string Nombre, string Rol)
         {
             UsuarioModel usuario = new UsuarioModel();
-            usuario.Usuario_id = this.GetMaxIdUsuario();
+            usuario.Usuario_id = await this.GetMaxIdUsuarioAsync();
             usuario.Email = Email;
             usuario.Nombre = Nombre;
             usuario.Rol = Rol;
@@ -48,7 +48,7 @@ namespace ApiMentopoker.Repositories
         }
 
 
-        public UsuarioModel Login(string Email, string Pass)
+        public async Task<UsuarioModel> LoginAsync(string Email, string Pass)
         {
             UsuarioModel usuario = this.context.Usuarios.FirstOrDefault(z => z.Email == Email);
             if (usuario == null)
@@ -78,7 +78,7 @@ namespace ApiMentopoker.Repositories
 
     
 
-        public List<UsuarioModel> GetUsuarios()
+        public async Task<List<UsuarioModel>> GetUsuariosAsync()
         {
             var consulta = from datos in this.context.Usuarios
                            select datos;
@@ -94,7 +94,7 @@ namespace ApiMentopoker.Repositories
 
         //}
 
-        public UsuarioModel FindUsuario(string usuario_id)
+        public async Task<UsuarioModel> FindUsuarioAsync(string usuario_id)
         {
             var consulta = from datos in this.context.Usuarios
                            where datos.Usuario_id == usuario_id
@@ -107,12 +107,12 @@ namespace ApiMentopoker.Repositories
             return usuario;
         }
 
-
+    
 
 
         public async Task UpdateUsuario(string Usuario_id, string Email, string Nombre, string Rol)
         {
-            UsuarioModel usuario = this.FindUsuario(Usuario_id);
+            UsuarioModel usuario = await this.FindUsuarioAsync(Usuario_id);
             usuario.Email = Email;
             usuario.Nombre = Nombre;
             usuario.Rol = Rol;
@@ -121,7 +121,7 @@ namespace ApiMentopoker.Repositories
 
         public async Task DeleteUsuario(string Usuario_id)
         {
-            UsuarioModel usuario = this.FindUsuario(Usuario_id);
+            UsuarioModel usuario = await this.FindUsuarioAsync(Usuario_id);
             this.context.Remove(usuario);
             await this.context.SaveChangesAsync();
         }

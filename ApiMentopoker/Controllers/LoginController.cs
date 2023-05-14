@@ -1,8 +1,13 @@
-﻿using ApiMentopoker.Models;
+﻿using ApiMentopoker.Helpers;
+using ApiMentopoker.Models;
 using ApiMentopoker.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using NugetMentopoker.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ApiMentopoker.Controllers
 {
@@ -11,10 +16,12 @@ namespace ApiMentopoker.Controllers
     public class LoginController : ControllerBase
     {
         private RepositoryLogin repoLogin;
+        private HelperOAuthToken helper;
 
         public LoginController(RepositoryLogin repoLogin)
         {
             this.repoLogin = repoLogin;
+            this.helper = helper;
         }
 
 
@@ -28,35 +35,86 @@ namespace ApiMentopoker.Controllers
             string Nombre = request.Nombre;
             string Rol = request.Rol;
 
-            await repoLogin.RegisterUsuario(Email, Pass, Nombre, Rol);
+            await repoLogin.RegisterUsuarioAsync(Email, Pass, Nombre, Rol);
             return Ok();
         }
 
 
+        //[HttpPost]
+        //[Route("[action]")]
+        //public IActionResult Login([FromBody] UsuarioRequest request)
+        //{
+        //    string Email = request.Email;
+        //    string Pass = request.Pass;
+
+
+        //    var usuario = repoLogin.LoginAsync(Email, Pass);
+        //    if (usuario == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else
+        //    {
+        //        return Ok(usuario);
+        //    }
+        //}
+
+
         [HttpPost]
         [Route("[action]")]
-        public IActionResult Login([FromBody] UsuarioRequest request)
+        public async Task<ActionResult> Login([FromBody] UsuarioRequest request)
         {
             string Email = request.Email;
             string Pass = request.Pass;
 
 
-            var usuario = repoLogin.Login(Email, Pass);
+            UsuarioModel usuario =
+                await repoLogin.LoginAsync(Email, Pass);
             if (usuario == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
             else
             {
-                return Ok(usuario);
+                //DEBEMOS CREAR UNAS CREDENCIALES DENTRO
+                //DEL TOKEN
+                SigningCredentials credentials =
+                    new SigningCredentials(this.helper.GetKeyToken()
+                    , SecurityAlgorithms.HmacSha256);
+                string jsonEmpleado =
+                    JsonConvert.SerializeObject(usuario);
+                Claim[] informacion = new[]
+                {
+                    new Claim("UserData", jsonEmpleado)
+                };
+
+                //EL TOKEN SE GENERA CON UNA CLASE Y DEBEMOS INDICAR
+                //LOS DATOS QUE CONFORMAN DICHO TOKEN
+                JwtSecurityToken token =
+                    new JwtSecurityToken(
+                        claims: informacion,
+                        issuer: this.helper.Issuer,
+                        audience: this.helper.Audience,
+                        signingCredentials: credentials,
+                        expires: DateTime.UtcNow.AddMinutes(30),
+                        notBefore: DateTime.UtcNow
+                        );
+                return Ok(new
+                {
+                    response =
+                    new JwtSecurityTokenHandler().WriteToken(token)
+                });
             }
         }
 
+
+
+
         [HttpGet]
         [Route("[action]")]
-        public List<UsuarioModel> GetUsuarios()
+        public async Task<List<UsuarioModel>> GetUsuarios()
         {
-            return repoLogin.GetUsuarios();
+            return await this.repoLogin.GetUsuariosAsync();
         }
 
        

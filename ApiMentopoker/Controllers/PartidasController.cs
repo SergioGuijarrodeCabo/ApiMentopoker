@@ -32,7 +32,7 @@ namespace ApiMentopoker.Controllers
 
         [HttpPut]
         [Route("[action]")]
-        public async Task<ActionResult> UpdatePartida([FromBody] PartidaModel partida)
+        public async Task<ActionResult> UpdatePartida([FromBody] Models.PartidaModel partida)
         {
             await this.repoStats.UpdatePartidaAsync(partida);
 

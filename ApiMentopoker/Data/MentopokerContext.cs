@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ApiMentopoker.Models;
+using Microsoft.EntityFrameworkCore;
 using NugetMentopoker.Models;
 
 namespace ApiMentopoker.Data
@@ -7,7 +8,7 @@ namespace ApiMentopoker.Data
     {
         public MentopokerContext(DbContextOptions<MentopokerContext> options) : base(options) {}
 
-        public DbSet<PartidaModel> Partidas { get; set; }
+        public DbSet<Models.PartidaModel> Partidas { get; set; }
 
         public DbSet<RondaModel> Rondas { get; set; }
         public DbSet<JugadaModel> Jugadas { get; set; }

@@ -85,14 +85,28 @@ namespace ApiMentopoker.Repositories
             return consulta.ToList();
         }
 
+        //public UsuarioModel FindUsuario(string usuario_id)
+        //{
+        //    var consulta = from datos in this.context.Usuarios
+        //                   where datos.Usuario_id == usuario_id
+        //                   select datos;
+        //    return consulta.FirstOrDefault();
+
+        //}
+
         public UsuarioModel FindUsuario(string usuario_id)
         {
             var consulta = from datos in this.context.Usuarios
                            where datos.Usuario_id == usuario_id
                            select datos;
-            return consulta.FirstOrDefault();
-
+            var usuario = consulta.FirstOrDefault();
+            if (usuario == null)
+            {
+                throw new ArgumentException($"Usuario with ID '{usuario_id}' not found.");
+            }
+            return usuario;
         }
+
 
 
 

@@ -18,7 +18,7 @@ namespace ApiMentopoker.Controllers
         private RepositoryLogin repoLogin;
         private HelperOAuthToken helper;
 
-        public LoginController(RepositoryLogin repoLogin)
+        public LoginController(RepositoryLogin repoLogin, HelperOAuthToken helper)
         {
             this.repoLogin = repoLogin;
             this.helper = helper;
@@ -70,6 +70,16 @@ namespace ApiMentopoker.Controllers
 
             UsuarioModel usuario =
                 await repoLogin.LoginAsync(Email, Pass);
+            UsuarioRequest usuarioCompleto = new UsuarioRequest
+            {
+                Usuario_id = usuario.Usuario_id,
+                Email = usuario.Email,
+                Nombre = usuario.Nombre,
+                Rol = usuario.Rol,
+
+
+            };
+
             if (usuario == null)
             {
                 return Unauthorized();
@@ -99,10 +109,15 @@ namespace ApiMentopoker.Controllers
                         expires: DateTime.UtcNow.AddMinutes(30),
                         notBefore: DateTime.UtcNow
                         );
+
+                string tokenString =
+                    new JwtSecurityTokenHandler().WriteToken(token);
+                usuarioCompleto.Token = tokenString;
+               
+
                 return Ok(new
                 {
-                    response =
-                    new JwtSecurityTokenHandler().WriteToken(token)
+                    response = usuarioCompleto
                 });
             }
         }

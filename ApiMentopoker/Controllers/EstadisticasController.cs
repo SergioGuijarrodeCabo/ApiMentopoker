@@ -36,7 +36,7 @@ namespace ApiMentopoker.Controllers
         [Route("[action]")]
         public async Task<ActionResult<Models.ConjuntoPartidasUsuario>> GetPartidas([FromBody] Models.PartidasRequest request)
         {
-            int usuarioId = request.UsuarioId;
+            string usuarioId = request.UsuarioId;
 
             DateTime? fechaInicio = request.FechaInicio;
             DateTime? fechaFinal = request.FechaFinal;
@@ -72,7 +72,7 @@ namespace ApiMentopoker.Controllers
         [Route("[action]")]
         public async Task<ActionResult<Models.EstadisticasPartidas>> GetEstadisticasPartidas([FromBody] Models.PartidasRequest request)
         {
-            int usuarioId = request.UsuarioId;
+            string usuarioId = request.UsuarioId;
 
             //DateOnly? fechaInicio = request.FechaInicio;
             //DateOnly? fechaFinal = request.FechaFinal;
@@ -90,7 +90,7 @@ namespace ApiMentopoker.Controllers
         [Route("[action]")]
         public async Task<ActionResult<Models.EstadisticasJugadas>> GetEstadisticasJugadas([FromBody] Models.PartidasRequest request)
         {
-            int usuarioId = request.UsuarioId;
+            string usuarioId = request.UsuarioId;
 
             //DateOnly? fechaInicio = request.FechaInicio;
             //DateOnly? fechaFinal = request.FechaFinal;

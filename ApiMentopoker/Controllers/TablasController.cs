@@ -1,4 +1,5 @@
 ﻿using ApiMentopoker.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NugetMentopoker.Models;
 
@@ -19,7 +20,7 @@ namespace ApiMentopoker.Controllers
          
             this.repoTablas = repoTablas;
         }
-
+        [Authorize]
         [HttpGet]
         [Route("[action]/{id}")]
         public async Task<ActionResult<List<Celda>>> GetTabla(int id)
@@ -35,7 +36,7 @@ namespace ApiMentopoker.Controllers
         //     await this.repoTablas.insertPartidaAsync(ids_Jugadas, ids_Rondas, ganancias_Rondas, cantidades_Rondas, cell_ids_Jugadas, table_ids_Jugadas, cantidades_Jugadas,
         //       seguimiento_jugadas, dinero_inicial, dinero_actual, comentario, usuario_id);
         //}
-
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
         public async Task<ActionResult> InsertarPartida([FromBody] PartidaRequest partidaRequest)

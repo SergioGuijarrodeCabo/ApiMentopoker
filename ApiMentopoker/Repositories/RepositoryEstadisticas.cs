@@ -231,7 +231,7 @@ namespace ApiMentopoker.Repositories
             this.com.Connection = this.cn;
         }
 
-        public async Task<List<Models.PartidaModel>> GetAllPartidasAsync()
+        public async Task<List<PartidaModel>> GetAllPartidasAsync()
         {
                 var consulta = from datos in this.context.Partidas
                                select datos;
@@ -239,7 +239,7 @@ namespace ApiMentopoker.Repositories
 
         }
 
-        public async Task<Models.PartidaModel> FindPartidaAsync(string Partida_id)
+        public async Task<PartidaModel> FindPartidaAsync(string Partida_id)
         {
             var consulta = from datos in this.context.Partidas
                            where datos.Partida_id == Partida_id
@@ -264,10 +264,10 @@ namespace ApiMentopoker.Repositories
 
         }
 
-        public async Task UpdatePartidaAsync(Models.PartidaModel partida)
+        public async Task UpdatePartidaAsync(PartidaModel partida)
         {
 
-            Models.PartidaModel partidaActualizada = await this.FindPartidaAsync(partida.Partida_id);
+            PartidaModel partidaActualizada = await this.FindPartidaAsync(partida.Partida_id);
             partidaActualizada.Cash_Inicial = partida.Cash_Inicial;
             partidaActualizada.Cash_Final = partida.Cash_Final;
             partidaActualizada.Comentarios = partida.Comentarios;
@@ -339,11 +339,11 @@ namespace ApiMentopoker.Repositories
 
 
 
-        public async Task<Models.ConjuntoPartidasUsuario> GetPartidasAsync(string Usuario_id, DateTime? fechaInicio = null, DateTime? fechaFinal = null, string? cell_id = null, int? condicion =null, double? cantidadJugada = null)
+        public async Task<ConjuntoPartidasUsuario> GetPartidasAsync(string Usuario_id, DateTime? fechaInicio = null, DateTime? fechaFinal = null, string? cell_id = null, int? condicion =null, double? cantidadJugada = null)
             {
 
             
-            List<Models.PartidaModel> partidas = new List<Models.PartidaModel>();
+            List<PartidaModel> partidas = new List<PartidaModel>();
 
 
             if (fechaInicio !=null || fechaFinal !=null)
@@ -367,7 +367,7 @@ namespace ApiMentopoker.Repositories
 
 
 
-            Models.ConjuntoPartidasUsuario conjunto = new Models.ConjuntoPartidasUsuario();
+           ConjuntoPartidasUsuario conjunto = new ConjuntoPartidasUsuario();
            
 
             List<RondaModel> rondas = new List<RondaModel>();
@@ -415,9 +415,9 @@ namespace ApiMentopoker.Repositories
         }
 
       
-        public async Task<ApiMentopoker.Models.EstadisticasPartidas> GetEstadisticasPartidasAsync(string Usuario_id, DateTime? fechaInicio = null, DateTime? fechaFinal = null)
+        public async Task<EstadisticasPartidas> GetEstadisticasPartidasAsync(string Usuario_id, DateTime? fechaInicio = null, DateTime? fechaFinal = null)
         {
-            ApiMentopoker.Models.EstadisticasPartidas stats = new ApiMentopoker.Models.EstadisticasPartidas();
+            EstadisticasPartidas stats = new EstadisticasPartidas();
 
    
 
@@ -449,12 +449,12 @@ namespace ApiMentopoker.Repositories
 
 
 
-        public async Task<ApiMentopoker.Models.EstadisticasJugadas> GetEstadisticasJugadasAsync(string Usuario_id, DateTime? fechaInicio = null, DateTime? fechaFinal = null, string? cell_id = null, int? condicion = null, double? cantidadJugada = null)
+        public async Task<EstadisticasJugadas> GetEstadisticasJugadasAsync(string Usuario_id, DateTime? fechaInicio = null, DateTime? fechaFinal = null, string? cell_id = null, int? condicion = null, double? cantidadJugada = null)
             {
 
 
 
-            ApiMentopoker.Models.EstadisticasJugadas stats = new ApiMentopoker.Models.EstadisticasJugadas();
+            EstadisticasJugadas stats = new EstadisticasJugadas();
 
        
 

@@ -1,4 +1,5 @@
 ﻿using ApiMentopoker.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetMentopoker.Models;
@@ -16,25 +17,25 @@ namespace ApiMentopoker.Controllers
             this.repoStats = repoStats;
         }
 
-
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
-        public async Task<ActionResult<List<Models.PartidaModel>>> GetAllPartidas()
+        public async Task<ActionResult<List<PartidaModel>>> GetAllPartidas()
         {
             return await this.repoStats.GetAllPartidasAsync();
         }
-
+        [Authorize]
         [HttpGet]
         [Route("[action]/{Partida_id}")]
-        public async Task<ActionResult<Models.PartidaModel>> FindPartida(string Partida_id)
+        public async Task<ActionResult<PartidaModel>> FindPartida(string Partida_id)
         {
             return await this.repoStats.FindPartidaAsync(Partida_id);
         }
 
-
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
-        public async Task<ActionResult<Models.ConjuntoPartidasUsuario>> GetPartidas([FromBody] Models.PartidasRequest request)
+        public async Task<ActionResult<ConjuntoPartidasUsuario>> GetPartidas([FromBody] PartidasRequest request)
         {
             string usuarioId = request.UsuarioId;
 
@@ -42,53 +43,55 @@ namespace ApiMentopoker.Controllers
             DateTime? fechaFinal = request.FechaFinal;
 
 
-            Models.ConjuntoPartidasUsuario result = await this.repoStats.GetPartidasAsync(
+            ConjuntoPartidasUsuario result = await this.repoStats.GetPartidasAsync(
                 usuarioId, fechaInicio, fechaFinal);
 
             return Ok(result);
         }
 
+
+
+
+        //[Authorize]
         //[HttpPost]
         //[Route("[action]")]
-        //public async Task<ActionResult<ConjuntoPartidasUsuario>> GetPartidas([FromBody] PartidasRequest request)
+        //public async Task<ActionResult<EstadisticasPartidas>> GetEstadisticasPartidas([FromBody] PartidasRequest request)
         //{
-        //    int usuarioId = request.UsuarioId;
+        //    string usuarioId = request.UsuarioId;
 
+        //    //DateOnly? fechaInicio = request.FechaInicio;
+        //    //DateOnly? fechaFinal = request.FechaFinal;
         //    DateTime? fechaInicio = request.FechaInicio;
         //    DateTime? fechaFinal = request.FechaFinal;
-        //    string cellId = request.CellId;
-        //    int? condicion = request.Condicion;
-        //    double? cantidadJugada = request.CantidadJugada;
 
-        //    ConjuntoPartidasUsuario result = await this.repoStats.GetPartidasAsync(
-        //        usuarioId, fechaInicio, fechaFinal, cellId, condicion, cantidadJugada);
+
+        //    EstadisticasPartidas result = await this.repoStats.GetEstadisticasPartidasAsync(
+        //        usuarioId, fechaInicio, fechaFinal);
 
         //    return Ok(result);
         //}
 
-
-
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
-        public async Task<ActionResult<Models.EstadisticasPartidas>> GetEstadisticasPartidas([FromBody] Models.PartidasRequest request)
+        public async Task<ActionResult<EstadisticasPartidas>> GetEstadisticasPartidas(PartidasRequest request)
         {
             string usuarioId = request.UsuarioId;
-
-            //DateOnly? fechaInicio = request.FechaInicio;
-            //DateOnly? fechaFinal = request.FechaFinal;
             DateTime? fechaInicio = request.FechaInicio;
             DateTime? fechaFinal = request.FechaFinal;
-         
 
-            Models.EstadisticasPartidas result = await this.repoStats.GetEstadisticasPartidasAsync(
-                usuarioId, fechaInicio, fechaFinal);
+            EstadisticasPartidas result = await this.repoStats.GetEstadisticasPartidasAsync(usuarioId, fechaInicio, fechaFinal);
 
             return Ok(result);
         }
 
+
+
+
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
-        public async Task<ActionResult<Models.EstadisticasJugadas>> GetEstadisticasJugadas([FromBody] Models.PartidasRequest request)
+        public async Task<ActionResult<EstadisticasJugadas>> GetEstadisticasJugadas( PartidasRequest request)
         {
             string usuarioId = request.UsuarioId;
 
@@ -100,7 +103,7 @@ namespace ApiMentopoker.Controllers
             int? condicion = request.Condicion;
             double? cantidadJugada = request.CantidadJugada;
 
-            Models.EstadisticasJugadas result = await this.repoStats.GetEstadisticasJugadasAsync(
+           EstadisticasJugadas result = await this.repoStats.GetEstadisticasJugadasAsync(
                 usuarioId, fechaInicio, fechaFinal, cellId, condicion, cantidadJugada);
 
             return Ok(result);

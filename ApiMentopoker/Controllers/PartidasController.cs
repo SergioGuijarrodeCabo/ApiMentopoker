@@ -1,4 +1,5 @@
 ﻿using ApiMentopoker.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetMentopoker.Models;
@@ -16,6 +17,7 @@ namespace ApiMentopoker.Controllers
             this.repoStats = repoStats;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("[action]/{Usuario_id}")]
         public async Task BorrarPartidasUsuario(string Usuario_id)
@@ -23,6 +25,7 @@ namespace ApiMentopoker.Controllers
             await this.repoStats.BorrarPartidasAsync(Usuario_id);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("[action]/{Partida_id}")]
         public async Task BorrarPartidasId(string Partida_id)
@@ -30,9 +33,10 @@ namespace ApiMentopoker.Controllers
             await this.repoStats.DeletePartidaAsync(Partida_id);
         }
 
+        [Authorize]
         [HttpPut]
         [Route("[action]")]
-        public async Task<ActionResult> UpdatePartida([FromBody] Models.PartidaModel partida)
+        public async Task<ActionResult> UpdatePartida(PartidaModel partida)
         {
             await this.repoStats.UpdatePartidaAsync(partida);
 

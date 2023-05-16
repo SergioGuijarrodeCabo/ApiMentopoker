@@ -1,6 +1,7 @@
 ﻿using ApiMentopoker.Helpers;
-using ApiMentopoker.Models;
+
 using ApiMentopoker.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -124,7 +125,7 @@ namespace ApiMentopoker.Controllers
 
 
 
-
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public async Task<List<UsuarioModel>> GetUsuarios()
@@ -132,7 +133,7 @@ namespace ApiMentopoker.Controllers
             return await this.repoLogin.GetUsuariosAsync();
         }
 
-       
+        [Authorize]
         [HttpPut]
         [Route("[action]")]
         public async Task<IActionResult> UpdateUsuario([FromBody] UsuarioRequest request)
@@ -146,6 +147,7 @@ namespace ApiMentopoker.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("[action]")]
         public async Task<IActionResult> DeleteUsuario([FromBody] UsuarioRequest request)
